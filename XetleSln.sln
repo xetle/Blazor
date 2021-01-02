@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAppVS1", "BlazorAppVS1\BlazorAppVS1.csproj", "{6D921743-8B48-493E-8CB1-9F71CA277C0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xetle", "BlazorAppVS1\Xetle.csproj", "{6D921743-8B48-493E-8CB1-9F71CA277C0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eccentricity", "Eccentricity\Eccentricity.csproj", "{817BC1C6-2D45-4F39-AFC7-D7ED51812A84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eccentricity", "Eccentricity\Eccentricity.csproj", "{817BC1C6-2D45-4F39-AFC7-D7ED51812A84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eccentricity.Tests", "Eccentricity.Tests\Eccentricity.Tests.csproj", "{6C53CE15-F8A1-40D7-99D6-2B4C834531A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eccentricity.Tests", "Eccentricity.Tests\Eccentricity.Tests.csproj", "{6C53CE15-F8A1-40D7-99D6-2B4C834531A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

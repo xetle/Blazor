@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace Eccentricity.Tests
 {
-    public class Tests
+    public class UnitTests
     {
         [SetUp]
         public void Setup()
