@@ -4,7 +4,8 @@
 
 <h1>Eccentricity Functions</h1>
 
-Calculate eccentricity functions for l=2.
+<p>Calculate eccentricity functions for l=2</p>
+<br/>
 
 @if (finalSeries == null)
 {
@@ -17,9 +18,21 @@ else
     @for (int i = 0; i < finalSeries.Count; i++)
     {
         var term = finalSeries[i];
+
         @if (term.Numerator != 0)
         {
-            <span>@term.ToString() e^@i+</span>
+            if (term.Numerator > 0)
+            {
+                <span>+</span>
+            }
+            else
+            {
+                <span>-</span>
+            }
+
+            <span>
+                <span>@Math.Abs(@term.Numerator)&frasl;@term.Denominator</span><span>e<sup>@i</sup></span>
+            </span>
         }
     }
 }
