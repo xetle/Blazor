@@ -175,22 +175,7 @@ namespace Eccentricity
 
         public string WriteOutput(List<Result> results)
         {
-            var finalSeries = new List<Fraction>(); // holds each of the coefficients of powers of e after processing all the possible h/l combinations
-
-            for (int i = 0; i < 4; i++)
-            {
-                var fracResult = new Fraction(0, Fraction.LCD);
-                var fractions = results.SelectMany(x => x.eCoefficients[i]);
-
-                foreach (var fraction in fractions)
-                {
-                    if (fraction.Numerator != 0)
-                    {
-                        fracResult = fracResult.Add(fraction.CommonDenominator);
-                    }
-                }
-                finalSeries.Add(fracResult.LowestDenominator());
-            }
+            var finalSeries = GetFinalSeries(results);
 
             string output = string.Empty;
             for (int i = 0; i < finalSeries.Count; i++)
