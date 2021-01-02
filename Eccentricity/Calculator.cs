@@ -9,7 +9,7 @@ namespace Eccentricity
     {
         const int l = 2;
 
-        public string Calculate(int p, int k)
+        public List<Fraction> Calculate(int p, int k)
         {
             // coefficients of powers of e for the beta term
             var betaList = new List<BetaBase>
@@ -58,7 +58,9 @@ namespace Eccentricity
 
             var answer = $"k={k}, 1st:{WriteOutput(resultsPos)} , 2nd:{WriteOutput(resultsNeg)}";
             Debug.Write(answer);
-            return answer;
+
+            var finalSeries = GetFinalSeries(resultsPos);
+            return finalSeries;
         }
 
         public Result CalculateCoefficient(int b, int d, Func<int, int, int> besselOrderFunc, int bUpper, int dUpper, int besselOrder, List<BetaBase> betaList, List<BesselBase> besselList)
@@ -147,6 +149,28 @@ namespace Eccentricity
             }
 
             return result;
+        }
+
+        public List<Fraction> GetFinalSeries(List<Result> results)
+        {
+            var finalSeries = new List<Fraction>(); // holds each of the coefficients of powers of e after processing all the possible h/l combinations
+
+            for (int i = 0; i < 4; i++)
+            {
+                var fracResult = new Fraction(0, Fraction.LCD);
+                var fractions = results.SelectMany(x => x.eCoefficients[i]);
+
+                foreach (var fraction in fractions)
+                {
+                    if (fraction.Numerator != 0)
+                    {
+                        fracResult = fracResult.Add(fraction.CommonDenominator);
+                    }
+                }
+                finalSeries.Add(fracResult.LowestDenominator());
+            }
+
+            return finalSeries;
         }
 
         public string WriteOutput(List<Result> results)

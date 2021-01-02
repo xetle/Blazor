@@ -6,6 +6,29 @@
 
 Calculate eccentricity functions for l=2.
 
-<div>
-    Answer id @Calculator.Calculate(0,1)
-</div>
+@if (finalSeries == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    @for (int i = 0; i < finalSeries.Count; i++)
+    {
+        var term = finalSeries[i];
+        @if (term.Numerator != 0)
+        {
+            <span>@term.ToString() e^@i+</span>
+        }
+    }
+}
+
+@code {
+    private List<Fraction> finalSeries;
+
+    protected override void OnInitialized()
+    {
+        finalSeries = Calculator.Calculate(0, 1);
+    }
+}
