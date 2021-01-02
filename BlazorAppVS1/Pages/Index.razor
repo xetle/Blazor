@@ -1,0 +1,13 @@
+﻿@page "/"
+@using Eccentricity
+@inject Calculator Calculator
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<div>
+    Answer id @Calculator.Calculate(0,1)
+</div>
