@@ -1,0 +1,93 @@
+﻿@page "/"
+@using Eccentricity
+@using System.ComponentModel.DataAnnotations
+@inject Calculator Calculator
+
+<h1>Eccentricity Functions</h1>
+
+<p>Calculate eccentricity functions for <em>l=2</em></p>
+<br />
+
+<EditForm Model="@parameters" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>
+            p:
+            <InputNumber @bind-Value="parameters.p" />
+        </label>
+    </p>
+
+    <p>
+        <label>
+            k:
+            <InputNumber @bind-Value="parameters.k" />
+        </label>
+    </p>
+
+    <button type="submit">Submit</button>
+    <br />
+    <br />
+
+    @if (finalSeries != null)
+    {
+        bool firstTerm = true;
+
+        for (int i = 0; i < finalSeries.Count; i++)
+        {
+            var term = finalSeries[i];
+
+            if (term.Numerator != 0)
+            {
+                if (term.Numerator > 0 && !firstTerm)
+                {
+                    <span> + </span>
+                }
+                else
+                {
+                    <span> - </span>
+                }
+                firstTerm = false;
+
+                var absNumerator = Math.Abs(term.Numerator);
+
+                // no need to display 1 in numerator
+                if (@term.Denominator == 1 && absNumerator == 1 && i == 0)
+                {
+                    <span>1</span>
+                }
+                else if (i == 1)
+                {
+                    <span><sup>e</sup>&frasl;<sub>@term.Denominator</sub></span>
+                }
+                else
+                {
+                    <span><sup>e<sup>@i</sup></sup>&frasl;<sub>@term.Denominator</sub></span>
+                }
+            }
+        }
+    }
+</EditForm>
+
+@code {
+    private List<Fraction>
+    finalSeries;
+    private Parameters parameters = new Parameters();
+
+    protected override void OnInitialized()
+    {
+    }
+
+    private void HandleValidSubmit()
+    {
+        finalSeries = Calculator.Calculate(parameters.p, parameters.k);
+    }
+
+    public class Parameters
+    {
+        [Range(0, 2, ErrorMessage = "p must be 0, 1 or 2")]
+        public int p { get; set; }
+
+        public int k { get; set; }
+    }
+}
