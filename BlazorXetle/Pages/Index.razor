@@ -43,7 +43,8 @@
                 {
                     <span> + </span>
                 }
-                else
+
+                if (term.Numerator < 0)
                 {
                     <span> - </span>
                 }
@@ -58,10 +59,18 @@
                 }
                 else if (i == 1)
                 {
+                    if (absNumerator > 1)
+                    {
+                        <span><sup>@absNumerator</sup></span>
+                    }
                     <span><sup>e</sup>&frasl;<sub>@term.Denominator</sub></span>
                 }
                 else
                 {
+                    if (absNumerator > 1)
+                    {
+                        <span><sup>@absNumerator</sup></span>
+                    }
                     <span><sup>e<sup>@i</sup></sup>&frasl;<sub>@term.Denominator</sub></span>
                 }
             }
