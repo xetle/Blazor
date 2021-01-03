@@ -11,6 +11,11 @@ namespace Eccentricity
 
         public List<Fraction> Calculate(int p, int k)
         {
+            if (p < 0 || p > 2)
+            {
+                throw new ArgumentException($"p must be 0, 1 or 2");
+            }
+
             // coefficients of powers of e for the beta term
             var betaList = new List<BetaBase>
             {
@@ -59,7 +64,9 @@ namespace Eccentricity
             var answer = $"k={k}, 1st:{WriteOutput(resultsPos)} , 2nd:{WriteOutput(resultsNeg)}";
             Debug.Write(answer);
 
-            var finalSeries = GetFinalSeries(resultsPos);
+            var allResults = resultsPos.Union(resultsNeg).ToList();
+
+            var finalSeries = GetFinalSeries(allResults);
             return finalSeries;
         }
 
