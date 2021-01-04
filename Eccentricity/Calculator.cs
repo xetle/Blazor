@@ -5,11 +5,18 @@ using System.Linq;
 
 namespace Eccentricity
 {
+    public enum Key
+    {
+        k1,
+        k2,
+        Sum
+    }
+
     public class Calculator
     {
         const int l = 2;
 
-        public List<Fraction> Calculate(int p, int k)
+        public Dictionary<Key, List<Fraction>> Calculate(int p, int k)
         {
             if (p < 0 || p > 2)
             {
@@ -50,12 +57,10 @@ namespace Eccentricity
                 {
                     if ((b + d) < 4)
                     {
-                        var besselOrder = besselOrderFuncPosExp(b, d);
-
-                        var resultPos = CalculateCoefficient(b, d, besselOrderFuncPosExp, bUpper, dUpper, besselOrder, betaList, besselList);
+                        var resultPos = CalculateCoefficient(b, d, besselOrderFuncPosExp, bUpper, dUpper, betaList, besselList);
                         resultsPos.Add(resultPos);
 
-                        var resultNeg = CalculateCoefficient(b, d, besselOrderFuncNegExp, bUpper, dUpper, besselOrder, betaList, besselList);
+                        var resultNeg = CalculateCoefficient(b, d, besselOrderFuncNegExp, bUpper, dUpper, betaList, besselList);
                         resultsNeg.Add(resultNeg);
                     }
                 }
@@ -66,12 +71,25 @@ namespace Eccentricity
 
             var allResults = resultsPos.Union(resultsNeg).ToList();
 
-            var finalSeries = GetFinalSeries(allResults);
-            return finalSeries;
+            var k1Series = GetFinalSeries(resultsPos);
+            var k2Series = GetFinalSeries(resultsNeg);
+
+            var sumSeries = GetFinalSeries(allResults);
+
+            var dictResults = new Dictionary<Key, List<Fraction>>
+            {
+                { Key.k1, k1Series },
+                { Key.k2, k2Series },
+                { Key.Sum, sumSeries }
+            };
+
+            return dictResults;
         }
 
-        public Result CalculateCoefficient(int b, int d, Func<int, int, int> besselOrderFunc, int bUpper, int dUpper, int besselOrder, List<BetaBase> betaList, List<BesselBase> besselList)
+        public Result CalculateCoefficient(int b, int d, Func<int, int, int> besselOrderFunc, int bUpper, int dUpper, List<BetaBase> betaList, List<BesselBase> besselList)
         {
+            var besselOrder = besselOrderFunc(b, d);
+
             var result = new Result(b, d);
 
             var coeffB = bUpper < 0 ? new NegativeBinomial(bUpper, b).Coeff() : new PositiveBinomial(bUpper, b).Coeff();

@@ -29,73 +29,105 @@
     <br />
     <br />
 
-    @if (finalSeries != null)
+    @if (dictResult != null)
     {
-        var m = 2-2*parameters.p;
-
-        <p>In Hansen notation <em>X<span class="supsub"><sup>n,m</sup><sub>k</sub></span></em></p>
-        <p><em>n=l</em> and <em>m=2-2p</em>. So we have for <em>l=2</em> and <em>p=@parameters.p</em> </p>
-        <p><em>X<span class="supsub"><sup>2,@m</sup><sub>k</sub></span></em></p>
-
-        bool firstTerm = true;
-
-        for (int i = 0; i < finalSeries.Count; i++)
+        foreach (var item in dictResult)
         {
-            var term = finalSeries[i];
+            <p />
 
-            if (term.Numerator != 0)
+            if (item.Key == Key.k1)
             {
-                if (term.Numerator > 0 && !firstTerm)
-                {
-    <span> + </span>
-                }
+                <span>Results for <em>c<sub>@parameters.k<sub>1</sub></sub></em> = </span>
+            }
+            else if (item.Key == Key.k2)
+            {
+                <span>Results for <em>c<sub>@parameters.k<sub>2</sub></sub></em> = </span>
+            }
+            else if (item.Key == Key.Sum)
+            {
+                <span>Results for <em>c<sub>@parameters.k</sub></em> = </span>
+            }
 
-                if (term.Numerator < 0)
-                {
-    <span> - </span>
-                }
-                firstTerm = false;
+            var finalSeries = item.Value;
 
-                var absNumerator = Math.Abs(term.Numerator);
+            bool firstTerm = true;
 
-                // no need to display 1 in numerator
-                if (@term.Denominator == 1 && absNumerator == 1 && i == 0)
+            for (int i = 0; i < finalSeries.Count; i++)
+            {
+                var term = finalSeries[i];
+
+                if (term.Numerator != 0)
                 {
-    <span>1</span>
-                }
-                else if (i == 1)
-                {
-                    if (absNumerator > 1)
+                    if (term.Numerator > 0 && !firstTerm)
                     {
-    <span><sup>@absNumerator</sup></span>
+                        <span> + </span>
                     }
-    <span><sup>e</sup>&frasl;<sub>@term.Denominator</sub></span>
-                }
-                else
-                {
-                    if (absNumerator > 1)
+
+                    if (term.Numerator < 0)
                     {
-    <span><sup>@absNumerator</sup></span>
+                        <span> - </span>
                     }
-    <span><sup>e<sup>@i</sup></sup>&frasl;<sub>@term.Denominator</sub></span>
+                    firstTerm = false;
+
+                    var absNumerator = Math.Abs(term.Numerator);
+
+                    // no need to display 1 in numerator
+                    if (@term.Denominator == 1 && absNumerator == 1 && i == 0)
+                    {
+                        <span>1</span>
+                    }
+                    else if (i == 0) // then we are raising e to a power of 0 - which is just 1
+                    {
+                        <span><sup>@absNumerator</sup>&frasl;<sub>@term.Denominator</sub></span>
+                    }
+                    else if (i == 1) // then we are not raising e to a power > 1 so it's just e
+                    {
+                        if (absNumerator > 1)
+                        {
+                            <span><sup>@absNumerator</sup></span>
+                        }
+                        <span><sup>e</sup>&frasl;<sub>@term.Denominator</sub></span>
+                    }
+                    else
+                    {
+                        if (absNumerator > 1)
+                        {
+                            <span><sup>@absNumerator</sup></span>
+                        }
+                        <span><sup>e<sup>@i</sup></sup>&frasl;<sub>@term.Denominator</sub></span>
+                    }
                 }
             }
-        }
+        };
+        <p />
+
+        <h2>Hansen Coefficients</h2>
+
+        var n = -3;
+        var m = 2 - 2 * parameters.p;
+        var k = parameters.k;
+
+        <p>
+            Hansen eccentricity functions have the notation <em>X<span class="supsub"><sup>n,m</sup><sub>k</sub></span></em>
+            <span> where <em>n=-(l+1)</em> and <em>m=2-2p</em> and <em>k=k</em> as above.</span>
+        </p>
+
+        <p>From the pdf, we have
+        <span> <em>2c<sub>k<sub>1</sub></sub> = X<span class="supsub"><sup>@n,m</sup><sub>k</sub></span></em></span>
+        <span>and <em> 2c<sub>k<sub>2</sub></sub> = X<span class="supsub"><sup>@n,-m</sup><sub>k</sub></span></em></span>
+        </p>
+
+        <span><em>X<span class="supsub"><sup>@n,@m</sup><sub>@k</sub></span></em></span>
     }
 </EditForm>
 
 @code {
-    private List<Fraction>
-    finalSeries;
+    private Dictionary<Key, List<Fraction>> dictResult;
     private Parameters parameters = new Parameters();
-
-    protected override void OnInitialized()
-    {
-    }
 
     private void HandleValidSubmit()
     {
-        finalSeries = Calculator.Calculate(parameters.p, parameters.k);
+        dictResult = Calculator.Calculate(parameters.p, parameters.k);
     }
 
     public class Parameters
