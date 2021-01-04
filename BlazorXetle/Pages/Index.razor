@@ -3,7 +3,8 @@
 @using System.ComponentModel.DataAnnotations
 @inject Calculator Calculator
 
-<h1>Eccentricity Functions <em>G<sub>lpq</sub></em></h1>
+<h1>Kaula Eccentricity Functions <em>G<sub>lpq</sub></em></h1>
+<a href="https://xetle.com">Xetle Web Site</a>
 
 <p>Calculate eccentricity functions for <em>l=2</em>. <em>G<sub>2pq</sub></em></p>
 <br />
@@ -48,56 +49,8 @@
                 <span>Results for <em>c<sub>@parameters.k</sub></em> = </span>
             }
 
-            var finalSeries = item.Value;
+            <DisplaySeries Series=item.Value />
 
-            bool firstTerm = true;
-
-            for (int i = 0; i < finalSeries.Count; i++)
-            {
-                var term = finalSeries[i];
-
-                if (term.Numerator != 0)
-                {
-                    if (term.Numerator > 0 && !firstTerm)
-                    {
-                        <span> + </span>
-                    }
-
-                    if (term.Numerator < 0)
-                    {
-                        <span> - </span>
-                    }
-                    firstTerm = false;
-
-                    var absNumerator = Math.Abs(term.Numerator);
-
-                    // no need to display 1 in numerator
-                    if (@term.Denominator == 1 && absNumerator == 1 && i == 0)
-                    {
-                        <span>1</span>
-                    }
-                    else if (i == 0) // then we are raising e to a power of 0 - which is just 1
-                    {
-                        <span><sup>@absNumerator</sup>&frasl;<sub>@term.Denominator</sub></span>
-                    }
-                    else if (i == 1) // then we are not raising e to a power > 1 so it's just e
-                    {
-                        if (absNumerator > 1)
-                        {
-                            <span><sup>@absNumerator</sup></span>
-                        }
-                        <span><sup>e</sup>&frasl;<sub>@term.Denominator</sub></span>
-                    }
-                    else
-                    {
-                        if (absNumerator > 1)
-                        {
-                            <span><sup>@absNumerator</sup></span>
-                        }
-                        <span><sup>e<sup>@i</sup></sup>&frasl;<sub>@term.Denominator</sub></span>
-                    }
-                }
-            }
         };
         <p />
 
@@ -112,12 +65,23 @@
             <span> where <em>n=-(l+1)</em> and <em>m=2-2p</em> and <em>k=k</em> as above.</span>
         </p>
 
-        <p>From the pdf, we have
-        <span> <em>2c<sub>k<sub>1</sub></sub> = X<span class="supsub"><sup>@n,m</sup><sub>k</sub></span></em></span>
-        <span>and <em> 2c<sub>k<sub>2</sub></sub> = X<span class="supsub"><sup>@n,-m</sup><sub>k</sub></span></em></span>
+        <p>
+            From the pdf, we have
+            <span> <em>2c<sub>k<sub>1</sub></sub> = X<span class="supsub"><sup>@n,m</sup><sub>k</sub></span></em></span>
+            <span>and <em> 2c<sub>k<sub>2</sub></sub> = X<span class="supsub"><sup>@n,-m</sup><sub>k</sub></span></em></span>
         </p>
 
         <span><em>X<span class="supsub"><sup>@n,@m</sup><sub>@k</sub></span></em></span>
+        <span> = <em>2c<sub>@k<sub>1</sub></sub></em> </span>
+        <span> = </span>
+        <DisplaySeries Series=hansen1 />
+
+        <p>
+            <span><em>X<span class="supsub"><sup>@n,-@m</sup><sub>@k</sub></span></em></span>
+            <span> = <em>2c<sub>@k<sub>2</sub></sub></em> </span>
+            <span> = </span>
+            <DisplaySeries Series=hansen2 />
+        </p>
     }
 </EditForm>
 
@@ -125,9 +89,27 @@
     private Dictionary<Key, List<Fraction>> dictResult;
     private Parameters parameters = new Parameters();
 
+    private List<Fraction> hansen1;
+    private List<Fraction> hansen2;
+
     private void HandleValidSubmit()
     {
         dictResult = Calculator.Calculate(parameters.p, parameters.k);
+
+        var doubleFraction = new Fraction(2, 1);
+        hansen1 = new List<Fraction>();
+        foreach (var fraction in dictResult[Key.k1])
+        {
+            var newFraction = fraction.Multiply(doubleFraction).LowestDenominator();
+            hansen1.Add(newFraction);
+        }
+
+        hansen2 = new List<Fraction>();
+        foreach (var fraction in dictResult[Key.k2])
+        {
+            var newFraction = fraction.Multiply(doubleFraction).LowestDenominator();
+            hansen2.Add(newFraction);
+        }
     }
 
     public class Parameters

@@ -1,0 +1,58 @@
+﻿@using Eccentricity
+
+@{
+    bool firstTerm = true;
+
+    for (int i = 0; i < Series.Count; i++)
+    {
+        var term = Series[i];
+
+        if (term.Numerator != 0)
+        {
+            if (term.Numerator > 0 && !firstTerm)
+            {
+                <span> + </span>
+            }
+
+            @if (term.Numerator < 0)
+            {
+                <span> - </span>
+            }
+            firstTerm = false;
+
+            var absNumerator = Math.Abs(term.Numerator);
+
+            // no need to display 1 in numerator
+            if (@term.Denominator == 1 && absNumerator == 1 && i == 0)
+            {
+                <span>1</span>
+            }
+            else if (i == 0) // then we are raising e to a power of 0 - which is just 1
+            {
+                <span><sup>@absNumerator</sup>&frasl;<sub>@term.Denominator</sub></span>
+            }
+            else if (i == 1) // then we are not raising e to a power > 1 so it's just e
+            {
+                if (absNumerator > 1)
+                {
+                    <span><sup>@absNumerator</sup></span>
+                }
+                <span><sup>e</sup>&frasl;<sub>@term.Denominator</sub></span>
+            }
+            else
+            {
+                if (absNumerator > 1)
+                {
+                    <span><sup>@absNumerator</sup></span>
+                }
+                <span><sup>e<sup>@i</sup></sup>&frasl;<sub>@term.Denominator</sub></span>
+            }
+        }
+    }
+}
+
+
+@code {
+    [Parameter]
+    public List<Fraction> Series { get; set; }
+}
