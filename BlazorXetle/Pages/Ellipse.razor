@@ -1,0 +1,66 @@
+﻿@page "/precession"
+
+@inject IJSRuntime JSRuntime
+
+<head>
+    <title>Ellipse Precession</title>
+    <style>
+        #animation {
+            float: right;
+            width: 50%;
+        }
+
+        #parameters {
+            float: right;
+            width: 50%;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Apsidal Precession</h1>
+    <p>A satellite will precess around an oblate spheroid. The maths behind why this happens is explained in the pdf below.</p>
+
+    <p>(Keywords : Kaula eccentricity functions apsidal precession inclination spheroid orbital Mercury spin orbit coupling Paul Gerber)</p>
+    <p><a target="_blank" href="spheroid.pdf">Mathematics behind precession and spin orbit coupling</a></p>
+
+</body>
+
+<div id="#container">
+    <div id="parameters">
+        <p>The animation shows the satellite traversing along an ellipse BUT the ellipse is rotating (precessing)</p>
+        <p>Mean Anomaly M (radians): <span id="meanAnomaly"></span></p>
+        <p>Eccentic Anomaly E (radians): <span id="eccentricAnomaly"></span></p>
+        <p>Orbit Period (days): <span id="orbitPeriod"></span></p>
+        <p><span id="yearsLabel">Years Elapsed: </span><span id="years"></span></p>
+        <p>Precession Angle: <span id="Omega"></span></p>
+        <p>Number of Complete Orbits: <span id="completeOrbits"></span></p>
+
+    </div>
+
+    <!-- This element has to be before the script -->
+    <div id="animation" style="position: relative;">
+
+        <input type="radio" name="model" value="anim"> Model (Satellite orbits in ellipse and the ellipse rotates)<br>
+        <input type="radio" name="model" value="mercury"> Mercury (precession due to Sun oblateness)<br>
+        <input type="radio" name="model" value="circular"> Circular (Actual satellite orbit - the circle. Osculating elliptical orbit - exaggerated - if the disturbing potential were to disappear)<br>
+
+        <canvas id="backgroundCanvas" width="1000" height="1000"
+                style="position: absolute; left: 0; top: 50; z-index: 0;"></canvas>
+        <canvas id="axisCanvas" width="1000" height="1000"
+                style="position: absolute; left: 0; top: 50; z-index: 1;"></canvas>
+        <canvas id="orbitCanvas" width="1000" height="1000"
+                style="position: absolute; left: 0; top: 50; z-index: 2;"></canvas>
+        <canvas id="circularCanvas" width="1000" height="1000"
+                style="position: absolute; left: 0; top: 50; z-index: 3;"></canvas>
+
+    </div>
+
+</div>
+
+@code { 
+    protected override async Task OnInitializedAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("startEllipse");
+    }
+}

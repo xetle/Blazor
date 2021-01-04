@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Eccentricity\Eccentricity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\scripts\" />
+  </ItemGroup>
+
 </Project>
