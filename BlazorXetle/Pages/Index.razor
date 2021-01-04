@@ -6,8 +6,7 @@
 <h1>Kaula Eccentricity Functions <em>G<sub>lpq</sub></em></h1>
 <a href="https://xetle.com">Xetle Web Site</a>
 
-<p>Calculate eccentricity functions for <em>l=2</em>. <em>G<sub>2pq</sub></em></p>
-<br />
+<p>Calculate eccentricity functions for <em>l=2</em> i.e. <em>G<sub>2pq</sub></em></p>
 
 <EditForm Model="@parameters" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
@@ -27,7 +26,6 @@
     </p>
 
     <button type="submit">Submit</button>
-    <br />
     <br />
 
     @if (dictResult != null)
@@ -56,29 +54,39 @@
 
         <h2>Hansen Coefficients</h2>
 
-        var n = -3;
-        var m = 2 - 2 * parameters.p;
-        var k = parameters.k;
-
         <p>
             Hansen eccentricity functions have the notation <em>X<span class="supsub"><sup>n,m</sup><sub>k</sub></span></em>
             <span> where <em>n=-(l+1)</em> and <em>m=2-2p</em> and <em>k=k</em> as above.</span>
         </p>
 
         <p>
-            From the pdf, we have
-            <span> <em>2c<sub>k<sub>1</sub></sub> = X<span class="supsub"><sup>@n,m</sup><sub>k</sub></span></em></span>
-            <span>and <em> 2c<sub>k<sub>2</sub></sub> = X<span class="supsub"><sup>@n,-m</sup><sub>k</sub></span></em></span>
+            <span>We also have <em>G<sub>lpq</sub></em></span>
+            <em>= X<span class="supsub"><sup>-(l+1),(l-2p)</sup><sub>(l-2p+q)</sub></span></em>
         </p>
 
+        var l = 2;
+        var n = -(l + 1);
+        var p = parameters.p;
+        var m = 2 - 2 * p;
+        var k = parameters.k;
+        <p>
+            From the pdf, we have for a given value of <em>p</em>, 
+            <span> <em>2*c<sub>k<sub>1</sub></sub> = X<span class="supsub"><sup>@n,m</sup><sub>k</sub></span></em></span>
+            <span>and <em> 2*c<sub>k<sub>2</sub></sub> = X<span class="supsub"><sup>@n,-m</sup><sub>k</sub></span></em></span>
+        </p>
+        <p>So in the case <em>l=@l</em>, <em>p=@p</em> and <em>k=@k</em></p>
         <span><em>X<span class="supsub"><sup>@n,@m</sup><sub>@k</sub></span></em></span>
         <span> = <em>2c<sub>@k<sub>1</sub></sub></em> </span>
+        <span> = <em>G<sub>@(l)@(p)@(k-l+2*p)</sub></em> </span>
         <span> = </span>
         <DisplaySeries Series=hansen1 />
 
+        <p/>
         <p>
             <span><em>X<span class="supsub"><sup>@n,-@m</sup><sub>@k</sub></span></em></span>
+            <span> = <em>X<span class="supsub"><sup>@n,@m</sup><sub>-@k</sub></span></em></span>
             <span> = <em>2c<sub>@k<sub>2</sub></sub></em> </span>
+            <span> = <em>G<sub>@(l)@(p)@(-k-l+2*p)</sub></em> </span>
             <span> = </span>
             <DisplaySeries Series=hansen2 />
         </p>
