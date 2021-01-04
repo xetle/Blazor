@@ -3,9 +3,9 @@
 @using System.ComponentModel.DataAnnotations
 @inject Calculator Calculator
 
-<h1>Eccentricity Functions</h1>
+<h1>Eccentricity Functions <em>G<sub>lpq</sub></em></h1>
 
-<p>Calculate eccentricity functions for <em>l=2</em></p>
+<p>Calculate eccentricity functions for <em>l=2</em>. <em>G<sub>2pq</sub></em></p>
 <br />
 
 <EditForm Model="@parameters" OnValidSubmit="@HandleValidSubmit">
@@ -31,6 +31,12 @@
 
     @if (finalSeries != null)
     {
+        var m = 2-2*parameters.p;
+
+        <p>In Hansen notation <em>X<span class="supsub"><sup>n,m</sup><sub>k</sub></span></em></p>
+        <p><em>n=l</em> and <em>m=2-2p</em>. So we have for <em>l=2</em> and <em>p=@parameters.p</em> </p>
+        <p><em>X<span class="supsub"><sup>2,@m</sup><sub>k</sub></span></em></p>
+
         bool firstTerm = true;
 
         for (int i = 0; i < finalSeries.Count; i++)
@@ -41,12 +47,12 @@
             {
                 if (term.Numerator > 0 && !firstTerm)
                 {
-                    <span> + </span>
+    <span> + </span>
                 }
 
                 if (term.Numerator < 0)
                 {
-                    <span> - </span>
+    <span> - </span>
                 }
                 firstTerm = false;
 
@@ -55,23 +61,23 @@
                 // no need to display 1 in numerator
                 if (@term.Denominator == 1 && absNumerator == 1 && i == 0)
                 {
-                    <span>1</span>
+    <span>1</span>
                 }
                 else if (i == 1)
                 {
                     if (absNumerator > 1)
                     {
-                        <span><sup>@absNumerator</sup></span>
+    <span><sup>@absNumerator</sup></span>
                     }
-                    <span><sup>e</sup>&frasl;<sub>@term.Denominator</sub></span>
+    <span><sup>e</sup>&frasl;<sub>@term.Denominator</sub></span>
                 }
                 else
                 {
                     if (absNumerator > 1)
                     {
-                        <span><sup>@absNumerator</sup></span>
+    <span><sup>@absNumerator</sup></span>
                     }
-                    <span><sup>e<sup>@i</sup></sup>&frasl;<sub>@term.Denominator</sub></span>
+    <span><sup>e<sup>@i</sup></sup>&frasl;<sub>@term.Denominator</sub></span>
                 }
             }
         }
