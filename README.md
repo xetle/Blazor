@@ -9,7 +9,6 @@ This repository includes a PDF to explain the maths behind the above 2 effects. 
 
 Both can be accessed at www.xetle.com
 
-The website is a Blazor webite
-Blazor is a Microsoft technology.
+The website is a Blazor website. Blazor is a Microsoft technology.
 The advantage of using Blazor (for me) is that I can use C# to code client side functionality - rather than javascript which I am less familiar with.
 The Blazor site is a solely client side application (or WebAssembly) i.e. there is no web server - the files are stored in Github Pages.
