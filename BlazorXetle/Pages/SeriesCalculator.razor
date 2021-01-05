@@ -1,0 +1,130 @@
+﻿@page "/seriescalculator"
+@using Eccentricity
+@using System.ComponentModel.DataAnnotations
+@inject Calculator Calculator
+
+<h1>Kaula Eccentricity Functions <em>G<sub>lpq</sub></em></h1>
+<a href="https://xetle.com">Xetle Web Site</a>
+
+<p>Calculate eccentricity functions for <em>l=2</em> i.e. <em>G<sub>2pq</sub></em></p>
+
+<EditForm Model="@parameters" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>
+            p:
+            <InputNumber @bind-Value="parameters.p" />
+        </label>
+    </p>
+
+    <p>
+        <label>
+            k:
+            <InputNumber @bind-Value="parameters.k" />
+        </label>
+    </p>
+
+    <button type="submit">Submit</button>
+    <br />
+
+    @if (dictResult != null)
+    {
+        foreach (var item in dictResult)
+        {
+            <p />
+
+            if (item.Key == Key.k1)
+            {
+                <span>Results for <em>c<sub>@parameters.k<sub>1</sub></sub></em> = </span>
+            }
+            else if (item.Key == Key.k2)
+            {
+                <span>Results for <em>c<sub>@parameters.k<sub>2</sub></sub></em> = </span>
+            }
+            else if (item.Key == Key.Sum)
+            {
+                <span>Results for <em>c<sub>@parameters.k</sub></em> = </span>
+            }
+
+            <DisplaySeries Series=item.Value />
+
+        };
+        <p />
+
+        <h2>Hansen Coefficients</h2>
+
+        <p>
+            Hansen eccentricity functions have the notation <em>X<span class="supsub"><sup>n,m</sup><sub>k</sub></span></em>
+            <span> where <em>n=-(l+1)</em> and <em>m=2-2p</em> and <em>k=k</em> as above.</span>
+        </p>
+
+        <p>
+            <span>We also have <em>G<sub>lpq</sub></em></span>
+            <em>= X<span class="supsub"><sup>-(l+1),(l-2p)</sup><sub>(l-2p+q)</sub></span></em>
+        </p>
+
+        var l = 2;
+        var n = -(l + 1);
+        var p = parameters.p;
+        var m = 2 - 2 * p;
+        var k = parameters.k;
+        <p>
+            From the pdf, we have for a given value of <em>p</em>, 
+            <span> <em>2*c<sub>k<sub>1</sub></sub> = X<span class="supsub"><sup>@n,m</sup><sub>k</sub></span></em></span>
+            <span>and <em> 2*c<sub>k<sub>2</sub></sub> = X<span class="supsub"><sup>@n,-m</sup><sub>k</sub></span></em></span>
+        </p>
+        <p>So in the case <em>l=@l</em>, <em>p=@p</em> and <em>k=@k</em></p>
+        <span><em>X<span class="supsub"><sup>@n,@m</sup><sub>@k</sub></span></em></span>
+        <span> = <em>2c<sub>@k<sub>1</sub></sub></em> </span>
+        <span> = <em>G<sub>@(l)@(p)@(k-l+2*p)</sub></em> </span>
+        <span> = </span>
+        <DisplaySeries Series=hansen1 />
+
+        <p/>
+        <p>
+            <span><em>X<span class="supsub"><sup>@n,-@m</sup><sub>@k</sub></span></em></span>
+            <span> = <em>X<span class="supsub"><sup>@n,@m</sup><sub>-@k</sub></span></em></span>
+            <span> = <em>2c<sub>@k<sub>2</sub></sub></em> </span>
+            <span> = <em>G<sub>@(l)@(p)@(-k-l+2*p)</sub></em> </span>
+            <span> = </span>
+            <DisplaySeries Series=hansen2 />
+        </p>
+    }
+</EditForm>
+
+@code {
+    private Dictionary<Key, List<Fraction>> dictResult;
+    private Parameters parameters = new Parameters();
+
+    private List<Fraction> hansen1;
+    private List<Fraction> hansen2;
+
+    private void HandleValidSubmit()
+    {
+        dictResult = Calculator.Calculate(parameters.p, parameters.k);
+
+        var doubleFraction = new Fraction(2, 1);
+        hansen1 = new List<Fraction>();
+        foreach (var fraction in dictResult[Key.k1])
+        {
+            var newFraction = fraction.Multiply(doubleFraction).LowestDenominator();
+            hansen1.Add(newFraction);
+        }
+
+        hansen2 = new List<Fraction>();
+        foreach (var fraction in dictResult[Key.k2])
+        {
+            var newFraction = fraction.Multiply(doubleFraction).LowestDenominator();
+            hansen2.Add(newFraction);
+        }
+    }
+
+    public class Parameters
+    {
+        [Range(0, 2, ErrorMessage = "p must be 0, 1 or 2")]
+        public int p { get; set; }
+
+        public int k { get; set; }
+    }
+}
