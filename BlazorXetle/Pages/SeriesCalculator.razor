@@ -28,6 +28,9 @@
     <button type="submit">Submit</button>
     <br />
 
+</EditForm>
+
+<div hidden="@parameters.IsResultsHidden">
     @if (dictResult != null)
     {
         foreach (var item in dictResult)
@@ -70,7 +73,7 @@
         var m = 2 - 2 * p;
         var k = parameters.k;
         <p>
-            From the pdf, we have for a given value of <em>p</em>, 
+            From the pdf, we have for a given value of <em>p</em>,
             <span> <em>2*c<sub>k<sub>1</sub></sub> = X<span class="supsub"><sup>@n,m</sup><sub>k</sub></span></em></span>
             <span>and <em> 2*c<sub>k<sub>2</sub></sub> = X<span class="supsub"><sup>@n,-m</sup><sub>k</sub></span></em></span>
         </p>
@@ -81,7 +84,7 @@
         <span> = </span>
         <DisplaySeries Series=hansen1 />
 
-        <p/>
+        <p />
         <p>
             <span><em>X<span class="supsub"><sup>@n,-@m</sup><sub>@k</sub></span></em></span>
             <span> = <em>X<span class="supsub"><sup>@n,@m</sup><sub>-@k</sub></span></em></span>
@@ -91,11 +94,11 @@
             <DisplaySeries Series=hansen2 />
         </p>
     }
-</EditForm>
+</div>
 
 @code {
     private Dictionary<Key, List<Fraction>> dictResult;
-    private Parameters parameters = new Parameters();
+    private Parameters parameters = new Parameters { IsResultsHidden = true };
 
     private List<Fraction> hansen1;
     private List<Fraction> hansen2;
@@ -118,13 +121,35 @@
             var newFraction = fraction.Multiply(doubleFraction).LowestDenominator();
             hansen2.Add(newFraction);
         }
+
+        parameters.IsResultsHidden = false;
     }
 
     public class Parameters
     {
         [Range(0, 2, ErrorMessage = "p must be 0, 1 or 2")]
-        public int p { get; set; }
+        private int _p;
+        public int p
+        {
+            get => _p;
+            set
+            {
+                _p = value;
+                IsResultsHidden = true;
+            }
+        }
 
-        public int k { get; set; }
+        private int _k;
+        public int k
+        {
+            get => _k;
+            set
+            {
+                _k = value;
+                IsResultsHidden = true;
+            }
+        }
+
+        public bool IsResultsHidden { get; set; } = false;
     }
 }
