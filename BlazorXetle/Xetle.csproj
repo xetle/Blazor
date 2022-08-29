@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\css\pure\" />
     <Folder Include="wwwroot\pdf\" />
     <Folder Include="wwwroot\scripts\" />
   </ItemGroup>

@@ -1,11 +1,24 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+<div class="pure-menu pure-menu-horizontal">
+    <a class="pure-menu-heading" href="">Eccentricity</a>
 
-<div class="main">
-    <div class="content px-4">
-        @Body
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item pure-menu-selected">
+            <a href="" class="pure-menu-link">Home</a>
+        </li>
+        <li class="pure-menu-item">
+            <a href="seriescalculator" class="pure-menu-link">Calculator</a>
+        </li>
+        <li class="pure-menu-item">
+            <a href="atom" class="pure-menu-link">Atom</a>
+        </li>
+    </ul>
+
+    <div class="main">
+        <div class="content px-4">
+            @Body
+        </div>
     </div>
 </div>
+
