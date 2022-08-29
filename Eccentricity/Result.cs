@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Eccentricity
+﻿namespace Eccentricity
 {
     public class Result
     {

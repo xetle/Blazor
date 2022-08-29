@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Eccentricity
+﻿namespace Eccentricity
 {
     /// <summary>
     /// Calculate Cnk type binomials (obviously involves factorials)

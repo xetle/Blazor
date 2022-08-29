@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Eccentricity
+﻿namespace Eccentricity
 {
     public class Fraction
     {

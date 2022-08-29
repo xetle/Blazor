@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Eccentricity
+﻿namespace Eccentricity
 {
     /// <summary>
     /// Bessel classes show the coefficients of e terms got from Jn(ke) i.e. for different k and for different orders
