@@ -16,23 +16,23 @@
     <div class="pure-g">
         <div class="pure-u-lg-1-2 pure-u-1 pure-u-md-1">
 
-            <input type="radio" name="model" value="anim"> Model (Satellite orbits in ellipse and the ellipse rotates)<br>
-            <input type="radio" name="model" value="mercury"> Mercury (precession due to Sun oblateness)<br>
-            <input type="radio" name="model" value="circular"> Circular (Actual satellite orbit - the circle.<br>
-            <br>
-
-            <canvas id="backgroundCanvas" width="1000" height="1000"
-                    style="position: absolute; left: 0; top: 50; z-index: 0;"></canvas>
-            <canvas id="axisCanvas" width="1000" height="1000"
+            <canvas id="backgroundCanvas" width="800" height="800"
+                    style="position; left: 0; top: 50; z-index: 0;"></canvas>
+            <canvas id="axisCanvas" width="800" height="800"
                     style="position: absolute; left: 0; top: 50; z-index: 1;"></canvas>
-            <canvas id="orbitCanvas" width="1000" height="1000"
+            <canvas id="orbitCanvas" width="800" height="800"
                     style="position: absolute; left: 0; top: 50; z-index: 2;"></canvas>
-            <canvas id="circularCanvas" width="1000" height="1000"
+            <canvas id="circularCanvas" width="800" height="800"
                     style="position: absolute; left: 0; top: 50; z-index: 3;"></canvas>
-
         </div>
 
         <div class="pure-u-lg-1-2 pure-u-1 pure-u-md-1">
+            <input type="radio" name="model" value="anim"><span> Model (Satellite orbits in ellipse and the ellipse rotates)</span><br>
+            <input type="radio" name="model" value="mercury"><span> Mercury (precession due to Sun oblateness)</span><br>
+            <input type="radio" name="model" value="circular"><span> Circular (Actual satellite orbit - the circle. Osculating elliptical orbit - exaggerated - if the disturbing potential were to disappear)</span><br><br>
+            <br>
+            <div> Circular (Actual satellite orbit - the circle. Osculating elliptical orbit - exaggerated - if the disturbing potential were to disappear)</div>
+
             <p>The animation shows the satellite traversing along an ellipse BUT the ellipse is rotating (precessing)</p>
             <p>Mean Anomaly M (radians): <span id="meanAnomaly"></span></p>
             <p>Eccentic Anomaly E (radians): <span id="eccentricAnomaly"></span></p>
