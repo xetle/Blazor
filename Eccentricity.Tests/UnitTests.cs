@@ -16,7 +16,7 @@ namespace Eccentricity.Tests
             var calculator = new Calculator();
 
             // Act
-            var answer = calculator.Calculate(0, 1);
+            var answer = calculator.Calculate(1, 0);
 
             // Assert
             Assert.IsTrue(true);
